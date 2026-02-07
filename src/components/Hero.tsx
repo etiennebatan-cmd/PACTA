@@ -13,9 +13,9 @@ export function Hero() {
       
       <div className="section-container relative z-10">
         <div className="max-w-4xl mx-auto text-center stagger-children">
-          <div className="flex items-center justify-center gap-2 mb-8">
-            <img src="/favicon.ico" alt="PACTA" className="h-10 w-10" />
-            <span className="text-2xl font-bold text-foreground">PACTA</span>
+          <div className="flex items-center justify-center gap-3 mb-10">
+            <img src="/favicon.ico" alt="PACTA" className="h-14 w-14" />
+            <span className="text-4xl font-bold text-foreground">PACTA</span>
           </div>
 
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-primary/10 border border-primary/20">
