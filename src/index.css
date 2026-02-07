@@ -1,0 +1,273 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Invoice Chaser Design System
+   Light, trust-focused aesthetic
+   Deep Blue foundation + Teal energy
+   Professional typography with DM Sans + Instrument Serif
+*/
+
+@layer base {
+  :root {
+    /* Clean white/cream foundation */
+    --background: 210 40% 98%;
+    --foreground: 215 35% 15%;
+
+    /* Card surfaces - pure white */
+    --card: 0 0% 100%;
+    --card-foreground: 215 35% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 35% 15%;
+
+    /* Primary - Deep Blue - trust & professionalism */
+    --primary: 215 85% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Soft gray */
+    --secondary: 215 20% 95%;
+    --secondary-foreground: 215 35% 25%;
+
+    /* Muted - Subtle backgrounds */
+    --muted: 210 30% 96%;
+    --muted-foreground: 215 20% 45%;
+
+    /* Accent - Teal - energy & action */
+    --accent: 175 60% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 25% 90%;
+    --input: 215 25% 90%;
+    --ring: 215 85% 40%;
+
+    --radius: 0.625rem;
+
+    /* Custom tokens */
+    --hero-gradient: linear-gradient(135deg, hsl(215 85% 40%) 0%, hsl(200 80% 45%) 50%, hsl(175 70% 45%) 100%);
+    --hero-glow: 215 85% 40%;
+    --text-gradient: linear-gradient(135deg, hsl(215 85% 45%) 0%, hsl(175 70% 40%) 100%);
+    --section-alt: 210 40% 96%;
+    --success: 158 64% 40%;
+    --success-foreground: 0 0% 100%;
+    
+    /* Blue tints for layering */
+    --blue-950: 215 45% 10%;
+    --blue-900: 215 40% 15%;
+    --blue-800: 215 35% 25%;
+    --blue-700: 215 30% 35%;
+    --blue-100: 215 30% 95%;
+    --blue-50: 210 40% 98%;
+
+    /* Teal accent shades */
+    --teal-500: 175 60% 45%;
+    --teal-400: 175 55% 55%;
+    --teal-100: 175 40% 92%;
+
+    /* Typography */
+    --font-display: 'Instrument Serif', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    @apply font-normal tracking-tight;
+  }
+
+  h4, h5, h6 {
+    font-family: var(--font-body);
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Hero button with gradient + glow */
+  .btn-hero {
+    @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-primary-foreground rounded-xl overflow-hidden transition-all duration-300;
+    background: var(--hero-gradient);
+    box-shadow: 
+      0 0 40px hsl(var(--hero-glow) / 0.25),
+      0 4px 20px hsl(var(--hero-glow) / 0.2);
+  }
+
+  .btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 0 60px hsl(var(--hero-glow) / 0.35),
+      0 8px 30px hsl(var(--hero-glow) / 0.3);
+  }
+
+  .btn-hero:active {
+    transform: translateY(0);
+  }
+
+  /* Secondary button */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-xl transition-all duration-200;
+    @apply bg-secondary text-secondary-foreground border border-border;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-muted border-primary/30;
+  }
+
+  /* Section containers */
+  .section-container {
+    @apply max-w-6xl mx-auto px-6 py-24 md:py-32;
+  }
+
+  .section-alt {
+    background-color: hsl(var(--section-alt));
+  }
+
+  /* Section headings - editorial style */
+  .section-title {
+    @apply text-4xl md:text-5xl lg:text-6xl text-foreground mb-6;
+    font-family: var(--font-display);
+    line-height: 1.1;
+  }
+
+  .section-subtitle {
+    @apply text-lg md:text-xl text-muted-foreground max-w-2xl;
+    line-height: 1.7;
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    background: var(--text-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Feature cards - premium feel */
+  .feature-card {
+    @apply p-6 rounded-2xl bg-card border border-border transition-all duration-300;
+    box-shadow: 0 1px 3px hsl(215 25% 90% / 0.5);
+  }
+
+  .feature-card:hover {
+    @apply border-primary/40;
+    box-shadow: 
+      0 0 0 1px hsl(var(--primary) / 0.1),
+      0 20px 40px -10px hsl(215 45% 10% / 0.1);
+    transform: translateY(-4px);
+  }
+
+  /* Step indicators */
+  .step-number {
+    @apply w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl;
+    background: var(--hero-gradient);
+    color: white;
+    box-shadow: 0 0 20px hsl(var(--hero-glow) / 0.2);
+  }
+
+  /* Badge styles */
+  .badge-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium;
+    @apply bg-primary/10 text-primary border border-primary/20;
+  }
+
+  /* Stat cards */
+  .stat-card {
+    @apply p-6 rounded-2xl bg-card border border-border;
+    box-shadow: 0 1px 3px hsl(215 25% 90% / 0.5);
+  }
+
+  /* Animations */
+  .fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .stagger-children > * {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+  .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+
+  /* Glow effect */
+  .glow-primary {
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.1);
+  }
+
+  /* FAQ styles */
+  .faq-trigger {
+    @apply flex w-full items-center justify-between py-5 text-left text-lg font-medium transition-all;
+    font-family: var(--font-body);
+  }
+
+  .faq-trigger:hover {
+    @apply text-primary;
+  }
+
+  /* Floating label style */
+  .floating-label {
+    @apply absolute -top-3 left-4 px-2 text-xs font-medium text-muted-foreground bg-card;
+  }
+
+  /* Highlight box */
+  .highlight-box {
+    @apply relative p-6 rounded-2xl overflow-hidden;
+    background: linear-gradient(135deg, hsl(var(--teal-100)) 0%, hsl(var(--blue-100)) 100%);
+    border: 1px solid hsl(var(--primary) / 0.15);
+  }
+
+  .highlight-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, hsl(var(--primary) / 0.05), transparent 50%);
+    pointer-events: none;
+  }
+}
+
+@layer utilities {
+  /* Subtle background pattern */
+  .bg-pattern {
+    background-image: radial-gradient(circle at 1px 1px, hsl(var(--border)) 1px, transparent 0);
+    background-size: 32px 32px;
+  }
+
+  /* Gradient text utility */
+  .gradient-text {
+    background: var(--text-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
