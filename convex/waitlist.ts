@@ -21,3 +21,15 @@ export const list = query({
     return await ctx.db.query("waitlist").order("desc").collect();
   },
 });
+
+export const updateStruggle = mutation({
+  args: {
+    id: v.id("waitlist"),
+    struggle: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, {
+      struggle: args.struggle,
+    });
+  },
+});

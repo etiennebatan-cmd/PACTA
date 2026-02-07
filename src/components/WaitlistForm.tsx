@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import type { Id } from "../../convex/_generated/dataModel";
 
 interface WaitlistFormProps {
   variant?: "default" | "minimal";
@@ -11,13 +12,17 @@ interface WaitlistFormProps {
 export function WaitlistForm({ variant = "default" }: WaitlistFormProps) {
   const [email, setEmail] = useState("");
   const [userType, setUserType] = useState<string>("");
+  const [struggle, setStruggle] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showQuestion, setShowQuestion] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [waitlistId, setWaitlistId] = useState<Id<"waitlist"> | null>(null);
 
   const addToWaitlist = useMutation(api.waitlist.add);
+  const updateStruggle = useMutation(api.waitlist.updateStruggle);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -29,17 +34,38 @@ export function WaitlistForm({ variant = "default" }: WaitlistFormProps) {
     setIsSubmitting(true);
 
     try {
-      await addToWaitlist({
+      const id = await addToWaitlist({
         email: email,
         userType: userType || undefined,
       });
       
+      setWaitlistId(id);
       setIsSubmitting(false);
-      setIsSuccess(true);
+      setShowQuestion(true);
     } catch (err) {
       console.error('Submission error:', err);
       setError('Something went wrong. Please try again.');
       setIsSubmitting(false);
+    }
+  };
+
+  const handleStruggleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      if (waitlistId && struggle.trim()) {
+        await updateStruggle({
+          id: waitlistId,
+          struggle: struggle,
+        });
+      }
+      
+      setIsSubmitting(false);
+      setIsSuccess(true);
+    } catch (err) {
+      console.error('Struggle update error:', err);
+      setIsSuccess(true);
     }
   };
 
@@ -59,8 +85,59 @@ export function WaitlistForm({ variant = "default" }: WaitlistFormProps) {
     );
   }
 
+  if (showQuestion) {
+    return (
+      <div className="space-y-4 animate-fade-in">
+        <div className="text-center mb-4">
+          <p className="text-lg font-medium text-foreground">One quick question...</p>
+          <p className="text-sm text-muted-foreground mt-1">This helps us build exactly what you need</p>
+        </div>
+        
+        <form onSubmit={handleStruggleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              What's your biggest struggle with payment follow-ups?
+            </label>
+            <textarea
+              value={struggle}
+              onChange={(e) => setStruggle(e.target.value)}
+              placeholder="e.g., Finding the right tone, tracking who to follow up with, remembering to send them..."
+              className="w-full min-h-[100px] px-4 py-3 text-base bg-background border border-border rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground/60"
+              disabled={isSubmitting}
+            />
+          </div>
+          
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setIsSuccess(true)}
+              className="flex-1 h-12 px-6 text-sm border border-border rounded-lg hover:bg-muted transition-colors"
+              disabled={isSubmitting}
+            >
+              Skip
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 btn-hero h-12 px-6"
+            >
+              {isSubmitting ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  Continue
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleEmailSubmit} className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-3">
         <Input
           type="email"
